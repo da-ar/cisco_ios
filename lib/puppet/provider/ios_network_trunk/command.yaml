@@ -39,3 +39,26 @@ attributes:
       get_value: '.*(?:(?:Trunking Native Mode VLAN: )(?:(?<untagged_vlan>.*) .*\\n)).*'
       set_value: 'switchport trunk native vlan <untagged_vlan>'
       can_have_no_match: 'true'
+  #USAA 
+  access_vlan:
+    default:
+      get_value: '.*(?:(?:Access Mode VLAN: )(?:(?<access_vlan>.*) .*\\n)).*'
+      set_value: 'switchport access vlan <access_vlan>' # <1-4094>
+      can_have_no_match: 'true'
+  # voice_vlan:
+  #   default:
+  #     get_value: '.*(?:(?:Voice VLAN: )(?:(?<voice_vlan>.*) .*\\n)).*'
+  #     set_value: 'switchport voice vlan <voice_vlan>' # <1-4094, dot1p, none, untagged>
+  #     can_have_no_match: 'true'
+  # switchport_nonegotiate:
+  #   default:
+  #     get_value: '.*(?:(?:Negotiation of Trunking: )(?:(?<switchport_nonegotiate>.*) .*\\n)).*'
+  #     set_value: 'switchport nonegotiate' # <cr>
+  #     unset_value: 'no switchport nonegotiate' # <cr>
+  #     can_have_no_match: 'false'
+  #Schneider
+  # allowed_vlans:
+  #   default:
+  #     get_value: '.*(?:(?:Trunking VLANs Enabled: )(?:(?<allowed_vlans>.*) .*\\n)).*'
+  #     set_value: 'switchport trunk allowed vlan <allowed_vlans>' # <WORD, add, all, except, none, remove>
+  #     can_have_no_match: 'true'

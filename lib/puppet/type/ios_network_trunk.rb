@@ -34,6 +34,10 @@ Puppet::ResourceApi.register_type(
         pruned_vlans: {
             type:    'Optional[Array[String]]',
             desc:    'Array of VLAN ID numbers used for VLAN pruning'
+        },
+        access_vlan: {
+            type:    'Optional[Integer]',
+            desc:    'VLAN used for hosting connections'
         }
     }
 )

@@ -39,6 +39,7 @@ describe 'ios_network_trunk' do
       encapsulation => 'dot1q',
       mode => 'dynamic_desirable',
       untagged_vlan => 42,
+      access_vlan => 8,
     }
     EOS
     make_site_pp(pp)
@@ -52,6 +53,7 @@ describe 'ios_network_trunk' do
     expect(result).to match(%r{encapsulation.*dot1q}) if result =~ %r{encapsulation =>}
     expect(result).to match(%r{mode.*dynamic_desirable})
     expect(result).to match(%r{untagged_vlan.*42})
+    expect(result).to match(%r{access_vlan.*8})
     expect(result).to match(%r{ensure.*present})
   end
 

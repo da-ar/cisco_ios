@@ -220,6 +220,7 @@ Please see the netdev_stdlib docs https://github.com/puppetlabs/netdev_stdlib/bl
 * [`ios_aaa_session_id`](#ios_aaa_session_id): Configure aaa session id on device
 * [`ios_config`](#ios_config): Execute an arbitrary configuration against the cisco_ios device with or without a check for idempotency.
 * [`ios_radius_global`](#ios_radius_global): Extends the radius_global type.
+* [`ios_network_trunk`](#ios_network_trunk): Ethernet logical (switch-port) interface. Configures VLAN trunking.
 * [`ios_stp_global`](#ios_stp_global): Manages the Cisco Spanning-tree Global configuration resource.
 
 #### cisco_ios
@@ -893,6 +894,63 @@ Data type: `Optional[Array[Tuple[Integer, String]]]`
 An array of [attribute number, attribute options] pairs
 
 See `radius_global` for other available fields
+
+#### ios_network_trunk
+
+Ethernet logical (switch-port) interface.  Configures VLAN trunking.
+
+
+##### Properties
+
+The following properties are available in the `network_trunk` type.
+
+###### `ensure`
+
+Valid values: present, absent.
+
+The basic property that the resource should be in.
+
+Default value: present.
+
+###### `encapsulation`
+
+Valid values: dot1q, isl, negotiate, none.
+
+The vlan-tagging encapsulation protocol, usually dot1q.
+
+###### `mode`
+
+Valid values: access, trunk, dynamic_auto, dynamic_desirable.
+
+The L2 interface mode, enables or disables trunking.
+
+###### `untagged_vlan`
+
+VLAN used for untagged VLAN traffic. a.k.a Native VLAN.
+
+###### `tagged_vlans`
+
+Array of VLAN names used for tagged packets.
+
+###### `pruned_vlans`
+
+Array of VLAN ID numbers used for VLAN pruning.
+
+##### Parameters
+
+The following parameters are available in the `network_trunk` type.
+
+###### `name`
+
+namevar
+
+The switch interface name, for example, Ethernet1.
+
+###### `access_vlan`
+
+namevar
+
+The switch interface name, for example, Ethernet1.
 
 ### ios_stp_global
 
