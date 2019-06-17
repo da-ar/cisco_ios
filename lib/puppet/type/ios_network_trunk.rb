@@ -36,8 +36,12 @@ Puppet::ResourceApi.register_type(
             desc:    'Array of VLAN ID numbers used for VLAN pruning'
         },
         access_vlan: {
-            type:    'Optional[Integer]',
+            type:    'Optional[Integer[0, 4095]]',
             desc:    'VLAN used for hosting connections'
-        }
+        },
+        voice_vlan: {
+            type:    'Optional[Variant[Integer[0, 4095], Enum["dot1p", "none", "untagged"]]]',
+            desc:    'Enables access ports to carry IP voice traffic'
+        },
     }
 )

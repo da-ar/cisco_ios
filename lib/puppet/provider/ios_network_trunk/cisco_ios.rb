@@ -4,7 +4,7 @@ require 'puppet/resource_api/simple_provider'
 require_relative '../../../puppet_x/puppetlabs/cisco_ios/utility'
 
 # Network Trunk Puppet Provider for Cisco IOS devices
-class Puppet::Provider::IosNetworkTrunk::CiscoIos < Puppet::ResourceApi::SimpleProvider
+class Puppet::Provider::IosNetworkTrunk::CiscoIos
     def self.commands_hash
         @commands_hash = PuppetX::CiscoIOS::Utility.load_yaml(File.expand_path(__dir__) + '/command.yaml')
     end
@@ -70,6 +70,22 @@ class Puppet::Provider::IosNetworkTrunk::CiscoIos < Puppet::ResourceApi::SimpleP
             end
         end
         PuppetX::CiscoIOS::Utility.enforce_simple_types(context, return_instances)
+    end
+
+    def set(context, changes)
+      changes.each do |name, change|
+        should = change[:should]
+        context.updating(name) do
+          update(context, name, should)
+        end
+      end
+    end
+  
+    def update(context, _name, should)
+      array_of_commands_to_run = Puppet::Provider::IosNetworkTrunk::CiscoIos.commands_from_instance(should)
+      array_of_commands_to_run.each do |command|
+        context.transport.run_command_conf_t_mode(command)
+      end
     end
 
     def create(context, name, should)

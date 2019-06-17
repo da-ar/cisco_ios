@@ -45,11 +45,11 @@ attributes:
       get_value: '.*(?:(?:Access Mode VLAN: )(?:(?<access_vlan>.*) .*\\n)).*'
       set_value: 'switchport access vlan <access_vlan>' # <1-4094>
       can_have_no_match: 'true'
-  # voice_vlan:
-  #   default:
-  #     get_value: '.*(?:(?:Voice VLAN: )(?:(?<voice_vlan>.*) .*\\n)).*'
-  #     set_value: 'switchport voice vlan <voice_vlan>' # <1-4094, dot1p, none, untagged>
-  #     can_have_no_match: 'true'
+  voice_vlan: # Only supported on access VLANs, https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/12-2_40_se/configuration/guide/scg/swvoip.pdf
+    default:
+      get_value: '.*(?:(?:Voice VLAN: )(?:(?<voice_vlan>.*) .*\\n)).*'
+      set_value: 'switchport voice vlan <voice_vlan>' # <1-4094, dot1p, none, untagged>
+      can_have_no_match: 'true'
   # switchport_nonegotiate:
   #   default:
   #     get_value: '.*(?:(?:Negotiation of Trunking: )(?:(?<switchport_nonegotiate>.*) .*\\n)).*'

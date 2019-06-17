@@ -37,11 +37,12 @@ describe 'ios_network_trunk' do
     ios_network_trunk { 'Port-channel1':
       ensure => 'present',
       encapsulation => 'dot1q',
-      mode => 'dynamic_desirable',
+      mode => 'access',
       untagged_vlan => 42,
       access_vlan => 8,
     }
     EOS
+    
     make_site_pp(pp)
     run_device(allow_changes: true)
     # Are we idempotent
@@ -56,6 +57,25 @@ describe 'ios_network_trunk' do
     expect(result).to match(%r{access_vlan.*8})
     expect(result).to match(%r{ensure.*present})
   end
+
+  # it 'edit an existing trunk - voice vlan' do
+  #   # Can only be set on certain vlans. Does not work on Port-channel1
+  #   pp = <<-EOS
+  #   ios_network_trunk { 'GigabitEthernet1/0/24':
+  #     ensure => 'present',
+  #     voice_vlan => '97'
+  #   }
+  #   EOS
+    
+  #   make_site_pp(pp)
+  #   run_device(allow_changes: true)
+  #   # Are we idempotent
+  #   run_device(allow_changes: false)
+  #   # Check puppet resource
+  #   result = run_resource('ios_network_trunk', 'GigabitEthernet1/0/24')
+  #   expect(result).to match(%r{GigabitEthernet1/0/24.*})
+  #   expect(result).to match(%r{untagged_vlan.*42})
+  # end
 
   it 'remove an existing interface' do
     # NOTE That this will fail on a 2960
