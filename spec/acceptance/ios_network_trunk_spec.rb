@@ -37,9 +37,10 @@ describe 'ios_network_trunk' do
     ios_network_trunk { 'Port-channel1':
       ensure => 'present',
       encapsulation => 'dot1q',
-      mode => 'access',
+      mode => 'trunk',
       untagged_vlan => 42,
       access_vlan => 8,
+      switchport_nonegotiate => true,
     }
     EOS
     
@@ -49,13 +50,14 @@ describe 'ios_network_trunk' do
     run_device(allow_changes: false)
     # Check puppet resource
     result = run_resource('ios_network_trunk', 'Port-channel1')
-    expect(result).to match(%r{Port-channel1.*})
+    expect(result).to match(%r{'Port-channel1'})
     # Not set/read on a 2960
-    expect(result).to match(%r{encapsulation.*dot1q}) if result =~ %r{encapsulation =>}
-    expect(result).to match(%r{mode.*dynamic_desirable})
-    expect(result).to match(%r{untagged_vlan.*42})
-    expect(result).to match(%r{access_vlan.*8})
-    expect(result).to match(%r{ensure.*present})
+    expect(result).to match(%r{encapsulation => 'dot1q'}) if result =~ %r{encapsulation =>}
+    expect(result).to match(%r{mode => 'trunk'})
+    expect(result).to match(%r{untagged_vlan => 42})
+    expect(result).to match(%r{access_vlan => 8})
+    expect(result).to match(%r{ensure => 'present'})
+    expect(result).to match(%r{switchport_nonegotiate => true})
   end
 
   # it 'edit an existing trunk - voice vlan' do

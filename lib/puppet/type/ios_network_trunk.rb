@@ -37,11 +37,15 @@ Puppet::ResourceApi.register_type(
         },
         access_vlan: {
             type:    'Optional[Integer[0, 4095]]',
-            desc:    'VLAN used for hosting connections'
+            desc:    'VLAN used for hosting connections when in access mode'
         },
         voice_vlan: {
             type:    'Optional[Variant[Integer[0, 4095], Enum["dot1p", "none", "untagged"]]]',
             desc:    'Enables access ports to carry IP voice traffic'
+        },
+        switchport_nonegotiate: {
+            type:    'Optional[Boolean]',
+            desc:    'Stops the access port from sending DTP (Dynamic Trunk Port) messages.'
         },
     }
 )

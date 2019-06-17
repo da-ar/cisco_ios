@@ -936,10 +936,6 @@ Array of VLAN names used for tagged packets.
 
 Array of VLAN ID numbers used for VLAN pruning.
 
-##### Parameters
-
-The following parameters are available in the `network_trunk` type.
-
 ###### `name`
 
 namevar
@@ -948,9 +944,15 @@ The switch interface name, for example, Ethernet1.
 
 ###### `access_vlan`
 
-namevar
+The VLAN the access port is to use when set in access mode.
 
-The switch interface name, for example, Ethernet1.
+###### `allowed_vlan`
+
+Array of VLAN ID numbers or enumerated value used to designate the VLANs that can be used when trunking.
+
+###### `switchport_nonegotiate`
+
+When set, prevents the port from sending DTP (Dynamic Trunk Port) messages. Set automatically to true while in 'access mode' and cannot be set in 'dynamic_*' mode.
 
 ### ios_stp_global
 

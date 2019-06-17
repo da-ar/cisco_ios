@@ -1,6 +1,4 @@
 require 'puppet/util/network_device/cisco_ios/device'
-require 'puppet/resource_api'
-require 'puppet/resource_api/simple_provider'
 require_relative '../../../puppet_x/puppetlabs/cisco_ios/utility'
 
 # Network Trunk Puppet Provider for Cisco IOS devices
@@ -44,12 +42,29 @@ class Puppet::Provider::IosNetworkTrunk::CiscoIos
         else
             ensure_command = PuppetX::CiscoIOS::Utility.insert_attribute_into_command_line(ensure_command, 'state', '', false)
             commands_array.push(ensure_command.strip) if ensure_command != ''
-            if property_hash[:mode]
-                property_hash[:mode] = PuppetX::CiscoIOS::Utility.convert_network_trunk_mode_modelled(property_hash[:mode])
+            unless property_hash[:switchport_nonegotiate].nil?
+                property_hash[:switchport_nonegotiate] = Puppet::Provider::IosNetworkTrunk::CiscoIos.false_to_unset(property_hash[:switchport_nonegotiate])
             end
             commands_array += PuppetX::CiscoIOS::Utility.build_commmands_from_attribute_set_values(property_hash, commands_hash)
         end
+        puts commands_array
         commands_array
+    end
+
+    # Replaces switchport_nonegotiate value 'Off' with true and 'On' with false
+    def self.switchport_nonegotiate_from_output(output)
+        output_switchport = output[:switchport_nonegotiate]
+        if output_switchport
+            output[:switchport_nonegotiate] = true if output_switchport == 'Off'
+            output[:switchport_nonegotiate] = false if output_switchport == 'On'
+        end
+        output
+    end
+
+    # Returns 'unset' if the given calue is false
+    def self.false_to_unset(false_value)
+        return 'unset' if false_value == false
+        false_value
     end
 
     def commands_hash
@@ -66,7 +81,8 @@ class Puppet::Provider::IosNetworkTrunk::CiscoIos
             output = context.transport.run_command_enable_mode(get_value_cmd)
             # If this interface is not a switchable port ignore
             if !output.nil? && (!output.include? ' is not a switchable port')
-                return_instances << Puppet::Provider::IosNetworkTrunk::CiscoIos.instance_from_cli(output, interface_name)
+                return_instance  = Puppet::Provider::IosNetworkTrunk::CiscoIos.instance_from_cli(output, interface_name)
+                return_instances << Puppet::Provider::IosNetworkTrunk::CiscoIos.switchport_nonegotiate_from_output(return_instance)
             end
         end
         PuppetX::CiscoIOS::Utility.enforce_simple_types(context, return_instances)
@@ -89,7 +105,9 @@ class Puppet::Provider::IosNetworkTrunk::CiscoIos
     end
 
     def create(context, name, should)
-        context.transport.run_command_interface_mode(name, Puppet::Provider::IosNetworkTrunk::CiscoIos.commands_from_instance(should).join("\n"))
+        commands = Puppet::Provider::IosNetworkTrunk::CiscoIos.commands_from_instance(should).join("\n")
+        puts commands
+        context.transport.run_command_interface_mode(name, commands)
     end
 
     alias update create
