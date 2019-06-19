@@ -45,6 +45,9 @@ class Puppet::Provider::IosNetworkTrunk::CiscoIos
             unless property_hash[:switchport_nonegotiate].nil?
                 property_hash[:switchport_nonegotiate] = Puppet::Provider::IosNetworkTrunk::CiscoIos.false_to_unset(property_hash[:switchport_nonegotiate])
             end
+            unless property_hash[:allowed_vlans].nil?
+                property_hash[:allowed_vlans] = Puppet::Provider::IosNetworkTrunk::CiscoIos.array_to_string(property_hash[:allowed_vlans])
+            end
             commands_array += PuppetX::CiscoIOS::Utility.build_commmands_from_attribute_set_values(property_hash, commands_hash)
         end
         puts commands_array
@@ -65,6 +68,12 @@ class Puppet::Provider::IosNetworkTrunk::CiscoIos
     def self.false_to_unset(false_value)
         return 'unset' if false_value == false
         false_value
+    end
+
+    # If given an array, converts it to a string
+    def self.array_to_string(array_value)
+        return array_value unless array_value.class == Array
+        string_value = "#{array_value[0]} #{array_value[1]}"
     end
 
     def commands_hash

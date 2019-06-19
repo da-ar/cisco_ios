@@ -41,6 +41,7 @@ describe 'ios_network_trunk' do
       untagged_vlan => 42,
       access_vlan => 8,
       switchport_nonegotiate => true,
+      allowed_vlans => ['except', '500-600']
     }
     EOS
     
@@ -58,6 +59,7 @@ describe 'ios_network_trunk' do
     expect(result).to match(%r{access_vlan => 8})
     expect(result).to match(%r{ensure => 'present'})
     expect(result).to match(%r{switchport_nonegotiate => true})
+    expect(result).to match(%r{allowed_vlans => '1-499,601-4094'})
   end
 
   # it 'edit an existing trunk - voice vlan' do

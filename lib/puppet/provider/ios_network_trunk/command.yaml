@@ -57,9 +57,9 @@ attributes:
       unset_value: 'no switchport nonegotiate' # <cr>
       can_have_no_match: 'true'
   #Schneider
-  # allowed_vlans:
-  #   default:
-  #     get_value: '.*(?:(?:Trunking VLANs Enabled: )(?:(?<allowed_vlans>.*) .*\\n)).*'
-  #     set_value: 'switchport trunk allowed vlan <allowed_vlans>' # <WORD, add, all, except, none, remove>
-  #     unset_value: 'no switchport trunk allowed vlan' # <cr>
-  #     can_have_no_match: 'true'
+  allowed_vlans:
+    default:
+      get_value: '(?:Trunking VLANs Enabled: (.*)$)'
+      set_value: 'switchport trunk allowed vlan <allowed_vlans>' # <WORD, add WORD, all, except WORD, none, remove WORD>
+      unset_value: 'no switchport trunk allowed vlan' # <cr>
+      can_have_no_match: 'true'

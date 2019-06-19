@@ -946,9 +946,9 @@ The switch interface name, for example, Ethernet1.
 
 The VLAN the access port is to use when set in access mode.
 
-###### `allowed_vlan`
+###### `allowed_vlans`
 
-Array of VLAN ID numbers or enumerated value used to designate the VLANs that can be used when trunking.
+An enumerated or string value, or a tuple consisting of both, that is used to designate which VLANs can be used when trunking.
 
 ###### `switchport_nonegotiate`
 

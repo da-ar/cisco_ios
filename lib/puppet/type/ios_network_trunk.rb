@@ -47,5 +47,9 @@ Puppet::ResourceApi.register_type(
             type:    'Optional[Boolean]',
             desc:    'Stops the access port from sending DTP (Dynamic Trunk Port) messages.'
         },
+        allowed_vlans: {
+            type:    'Optional[Variant[Enum["all", "none"], Tuple[Enum["add", "remove", "except"], String], String]]',
+            desc:    'VLANs allowed access to the port when in trunk mode.'
+        },
     }
 )
