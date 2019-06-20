@@ -897,12 +897,12 @@ See `radius_global` for other available fields
 
 #### ios_network_trunk
 
-Ethernet logical (switch-port) interface.  Configures VLAN trunking.
+Ethernet logical (switch-port) interface.  Configures VLAN trunking. Extension of network_trunk.
 
 
 ##### Properties
 
-The following properties are available in the `network_trunk` type.
+The following properties are available in the `ios_network_trunk` type.
 
 ###### `ensure`
 
